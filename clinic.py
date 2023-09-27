@@ -35,6 +35,9 @@ swagger = Swagger(app)
 
 db = SQLAlchemy(app)
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+swagger_dir = os.path.join(basedir, "..", "swagger_docs")
+
 # Model Data Karyawan
 class Patients(db.Model):
     patient_id = db.Column(db.Integer, primary_key = True)
@@ -57,8 +60,9 @@ def create_tables():
 def index():
     return render_template('index.html')
 
+# @swag_from('/project/swagger_docs/get_all_data_patients.yaml')
 @app.route('/display-patients', methods = ['GET'])
-@swag_from('/project/swagger_docs/get_all_data_patients.yaml')
+@swag_from(os.path.join(swagger_dir, "get_all_data_patients.yaml"))
 def get_all_patients():
     patients_list = []
     try:
@@ -85,7 +89,7 @@ def get_all_patients():
             return render_template('error.html', pesan = "Tidak ada data pasien yang dapat ditampilkan"), 404
 
 @app.route('/display-appointments', methods = ['GET'])
-@swag_from('/swagger_docs/get_all_data_appointments.yaml')
+@swag_from(os.path.join(swagger_dir, "get_all_data_appointments.yaml"))
 def get_all_appointments():
     appointments_list = []
     try:
@@ -113,7 +117,7 @@ def get_all_appointments():
             return render_template('error.html', pesan = "Tidak ada data janji temu yang dapat ditampilkan"), 404
 
 @app.route('/create-patients', methods = ['GET', 'POST'])
-@swag_from('/swagger_docs/create_data_patients.yaml')
+@swag_from(os.path.join(swagger_dir, "create_data_patients.yaml"))
 def create_patients():
     if request.method == "POST":
         # Mendapatkan data dari form
@@ -149,7 +153,7 @@ def createappointment():
     return render_template('createappointment.html')
 
 @app.route('/create-appointment', methods = ['POST'])
-@swag_from('/swagger_docs/create_data_appointments.yaml')
+@swag_from(os.path.join(swagger_dir, "create_data_appointments.yaml"))
 def create_appointments():
     patient_id = request.form.get('patient_id')
     doctor_name = request.form.get('doctor_name')
@@ -183,7 +187,7 @@ def updatepatients():
     return render_template('updatepatient.html')
 
 @app.route('/update-patient', methods = ['POST'])
-@swag_from('/swagger_docs/update_data_patients.yaml')
+@swag_from(os.path.join(swagger_dir, "update_data_patients.yaml"))
 def update_patients():
     try:
         # Ambil data dari form
@@ -227,7 +231,7 @@ def updateappointment():
         
 
 @app.route('/update-appointment', methods = ['POST'])
-@swag_from('/swagger_docs/update_data_appointments.yaml')
+@swag_from(os.path.join(swagger_dir, "update_data_appointments.yaml"))
 def update_appointments():
     try:
         # Ambil data dari form
@@ -274,7 +278,7 @@ def deletepatient():
         return render_template('deletepatient.html', patients_list = patients_list)
 
 @app.route('/patient/<int:patient_id>', methods = ['DELETE'])
-@swag_from('/swagger_docs/delete_data_patients.yaml')
+@swag_from(os.path.join(swagger_dir, "delete_data_patients.yaml"))
 def delete_patients(patient_id):
     try:
         # Cari pasien berdasarkan patient_id
@@ -310,7 +314,7 @@ def deleteappointment():
         return render_template('deleteappointment.html', appointments_list = appointments_list) 
 
 @app.route('/appointment/<int:appointment_id>', methods = ['DELETE'])
-@swag_from('/swagger_docs/delete_data_appointments.yaml')
+@swag_from(os.path.join(swagger_dir, "delete_data_appointments.yaml"))
 def delete_appointments(appointment_id):
     try:
         # Cari appointment berdasarkan appointment_id
