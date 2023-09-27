@@ -17,13 +17,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SWAGGER'] = {
     'title': 'Sistem Informasi Manajemen Pasien untuk Klinik API',
     'uiversion': 3,
-    'header': [],
+    'headers': [],
     'specs': [
         {
             'endpoint': 'apispec_1',
             'route': '/apispec_1.json',
             'rule_filter': lambda rule: True,
-            'model_filter': lambda rule: True,
+            'model_filter': lambda tag: True,
         }
     ],
     'static_url_path': '/flasgger_static',
