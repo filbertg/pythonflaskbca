@@ -36,7 +36,7 @@ swagger = Swagger(app)
 db = SQLAlchemy(app)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-swagger_dir = os.path.join(basedir, "..", "swagger_docs")
+swagger_dir = os.path.join(basedir, "swagger_docs")
 
 # Model Data Karyawan
 class Patients(db.Model):
