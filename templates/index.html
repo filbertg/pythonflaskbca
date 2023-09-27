@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Clinicku</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="icon" href="{{url_for('static', filename='logo.png')}}">
+</head>
+<body class="blue-theme">
+    <div><h2>Selamat Datang di API Clinicku</h2></div>
+    <div><img src="../static/logo.png"></div>
+    <div class="menu">
+        <div class="col">
+            <div class="row"><span>Patient Management</span></div>
+            <div><a href="/display-patients" class="menu-button row">Tampilkan Data Pasien</a></div>
+            <div><a href="/create-patients" class="menu-button">Registrasi Pasien Baru</a></div>
+            <div><a href="/updatepatient" class="menu-button">Update Data Pasien</a></div>
+            <div><a href="/deletepatient" class="menu-button">Hapus Data Pasien</a></div>
+        </div>
+        <div class="col">
+            <div class="row"><span>Appointment Management</span></div>
+            <div><a href="/display-appointments" class="menu-button appointment">Tampilkan Data Janji Temu</a></div>
+            <div><a href="/createappointment" class="menu-button appointment">Registrasi Janji Temu Baru</a></div>
+            <div><a href="/updateappointment " class="menu-button appointment">Update Data Janji Temu</a></div>
+            <div><a href="/deleteappointment" class="menu-button appointment">Hapus Data Janji Temu</a></div>
+        </div>
+    </div>
+</body> 
+</html>

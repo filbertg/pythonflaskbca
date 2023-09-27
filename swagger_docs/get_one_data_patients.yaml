@@ -1,0 +1,36 @@
+openapi: 3.0.0
+info:
+  title: Ambil 1 Data Pasien
+  version: 1.0.0
+tags:
+  - name: Daftar API
+definitions:
+  Patients:
+    type: object
+    properties:
+      patient_id:
+        type: integer
+        description: ID pasien
+      name:
+        type: string
+        description: Nama pasien
+      age:
+        type: integer
+        description: Umur Pasien
+      medical_history:
+        type: string
+        description: Riwayat Kesehatan Pasien
+  
+parameters:
+  - name: patient_id
+    in: path
+    description: ID pasien yang akan diambil
+    required: true
+    type: integer
+responses:
+  200:
+    description: Data karyawan berdasarkan ID
+    schema:
+      $ref: '#/definitions/Patients'
+  404:
+    description: Data tidak ditemukan 

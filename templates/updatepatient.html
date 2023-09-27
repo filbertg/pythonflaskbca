@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search and Update Data</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body class="purple-theme ">
+    <h2>Search Patient to Update</h2>
+
+    <div class="form-container">
+        <form action="/updatepatient" method="post">
+            <label class="field-label" for="name">Nama Pasien:</label>
+            <input type="text" id="name" name="name" placeholder="Enter Nama Pasien">
+            <input type="submit" value="Search" class="update-button">
+        </form>
+        <a href="/" class="home-button">Kembali ke Home</a>
+    </div>
+
+    {% if patients_list %}
+    <h3>Patient Found:</h3>
+    <table>
+        <tr>
+            <th>Patient ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Medical History</th>
+            <th>Action</th>
+        </tr>
+        {% for patient in patients_list %}
+        <tr>
+            <td>{{ patient.patient_id }}</td>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.age }}</td>
+            <td>{{ patient.medical_history }}</td>
+            <td>
+                <button onclick="showUpdateForm('{{ patient.patient_id }}', '{{ patient.name }}', '{{ patient.age }}', '{{ patient.medical_history }}')" class="update-button">Update</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div id="updateForm" style="display:none;">
+        <h3>Update Data:</h3>
+        <form action="/update-patient" method="post">
+            <input type="hidden" id="updateId" name="patient_id">
+            <label class="field-label" for="updateName">Name:</label>
+            <input type="text" id="updateName" name="name" placeholder="New Name" required>
+            <label class="field-label" for="updateAge">Age:</label>
+            <input type="text" id="updateAge" name="age" placeholder="New Age" required>
+            <label class="field-label" for="updateMedicalHistory">Medical History:</label>
+            <textarea type="text" id="updateMedicalHistory" name="medical_history" placeholder="New Medical History" maxlength="255"></textarea>
+            <input type="submit" value="Submit" class="update-button">
+        </form>
+    </div>
+    <script>
+        function showUpdateForm(patient_id, name, age, medical_history) {
+            document.getElementById('updateId').value = patient_id;
+            document.getElementById('updateName').value = name;
+            document.getElementById('updateAge').value = age;
+            document.getElementById('updateMedicalHistory').value = medical_history;
+            document.getElementById('updateForm').style.display = 'block';
+        }
+    </script>
+
+    {% else %}
+    <p>Tidak ada data yang ditemukan untuk nama pasien yang diberikan</p>
+    {% endif %}
+</body>
+</html>

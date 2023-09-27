@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Data Pasien</title>
+    <!-- Link ke style.css -->
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body class="blue-theme">
+    <h2>Input Data Pasien Baru</h2>
+    <div class="form-container">
+        {% if error %}
+            <p style="color: red"> {{ error }} </p>
+        {% endif %}
+        <form action="/create-patients" method="post">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" placeholder="Masukkan Nama Pasien" required>
+            <br>
+            <label for="age">Age:</label>
+            <input type="text" name="age" id="age" placeholder="Masukkan Umur" required>
+            <br>
+            <label for="jabatan">Medical History:</label>
+            <textarea type="text" name="medical_history" id="medical_history" placeholder="Masukkan Riwayaat Kesehatan" maxlength="255"></textarea>
+            <br>
+            <input type="submit" value="Tambahkan">
+        </form>
+        <a href="/" class="home-button yellow-button" style="align-items: center; align-content: center; justify-content: center; justify-items: center;">Kembali ke Home</a>
+    </div>
+</body>
+</html>

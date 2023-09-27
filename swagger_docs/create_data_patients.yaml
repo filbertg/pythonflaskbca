@@ -1,0 +1,36 @@
+openapi: 3.0.0 # Mendefinisikan versi OpenAPI yang digunakan, dalam hal ini adlah versi 3
+
+info:   # Blok informasi metadata tentang API
+  title: Menambahkan Pasien Baru  # Judul dari API
+  version: 1.0.0  # Versi dari API
+
+tags:
+  - name: Daftar API
+
+parameters: # Daftar parameter yang dapat digunakan untuk semua opeasi API
+  - in: body  # Parameter ini berada di body request
+    name: body  # Nama dari parameter
+    description: Data pasien yang akan ditambahkan  # Deskripsi dari parameter
+    required: true  # Menandakan bahwa parameter ini wajib diisi
+    schema: # Skema dari parameter, mendefinisikan struktur data dari parameter
+      $ref: '#/definitions/Patients'  # Referensi ke definisi 'Karyawan'
+
+responses:  # Daftar respons yang dapat diberikan oleh operasi API
+  201:  # Kode status HTTP untuk respon sukses pembuatan resource baru
+    description: Data pasien berhasil ditambahkan   # Deskripsi dari respon
+    schema: # Skema dari respon, mendefinisikan struktur data dari respon
+      $ref: '#/definitions/Patients'  # Referensi ke definisi 'Karyawan'
+
+defintions:   # Daftar definisi skema yang dapat digunakan di seluruh file
+  Patients:   # Nama dari definisi skema
+    type: object  # Tipe dari skema, dalam hal ini adalah object
+    properties:   # Daftar properti yang dapat dimiliki oleh object
+      name:  # Nama dari properti
+        type: string  # Tipe dari properti, dalam hal ini adalah string
+      age:   # Nama dari properti
+        type: integer  # Tipe dari properti, dalam hal ini adalah integer
+      medical_history:    # Nama dari properti
+        type: string  # Tipe dari properti, dalam hal ini adalah string
+    required:   # Daftar properti yang wajib ada dalam object
+      - name   # Properti 'name' adalah wajib
+      - age   # Properti 'age' adalah wajib

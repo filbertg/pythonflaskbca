@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search and Delete Data</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body class="purple-theme ">
+    <h2>Search Patient to Delete</h2>
+
+    <div class="form-container">
+        <form action="/deletepatient" method="post">
+            <label class="field-label" for="name">Nama Pasien:</label>
+            <input type="text" id="name" name="name" placeholder="Enter Nama Pasien">
+            <input type="submit" value="Search" class="update-button">
+        </form>
+        <a href="/" class="home-button">Kembali ke Home</a>
+    </div>
+
+    {% if patients_list %}
+    <h3>Patient Found:</h3>
+    <table>
+        <tr>
+            <th>Patient ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Medical History</th>
+            <th>Action</th>
+        </tr>
+        {% for patient in patients_list %}
+        <tr>
+            <td>{{ patient.patient_id }}</td>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.age }}</td>
+            <td>{{ patient.medical_history }}</td>
+            <td>
+                <button onclick="confirmDelete  ('{{ patient.patient_id }}', '{{ patient.name }}')" class="update-button">Update</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <script>
+        function confirmDelete(patient_id, name) {
+            const isConfirmed = confirm(`Apakah anda yakin ingin menghapus data pasien dengan nama ${name}?`);
+            if (isConfirmed) {
+                fetch(`/patient/${patient_id}`, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message.includes("berhasil dihapus")) {
+                        alert("Data pasien berhasil dihapus!");
+                        location.reload();
+                    } else {
+                        alert("Terjadi kesalahan saat menghapus data. Silahkan coba lagi.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error", error);
+                    alert("Terjadi kesalahan saat menghapus data. Silahkan coba lagi");
+                });
+            }
+        }
+    </script>
+</body>
+</html>

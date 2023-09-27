@@ -1,0 +1,32 @@
+openapi: 3.0.0
+info:
+  title: Ambil Semua Data Appointments
+  version: 1.0.0
+tags:
+  - name: Daftar API
+definitions:
+  Appointments:
+    type: object
+    properties:
+      appointment_id:
+        type: integer
+        description: ID appointment
+      patient_id:
+        type: integer
+        description: ID pasien
+      doctor_name:
+        type: string
+        description: Nama Dokter yang menangani 
+      date:
+        type: date
+        description: Tanggal appointment
+      diagnosis:
+        type: string
+        description: Diagnosa yang diberikan dari dokter
+responses:
+  200:
+    description: Daftar semua appointments
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/Appointments'

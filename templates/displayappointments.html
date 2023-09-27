@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tampilkan Semua Data Janji Temu</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link href='https://fonts.googleapis.com/css?family=Roboto|Pacifico' rel='stylesheet'>
+</head>
+<body>
+    <a href="/" class="home-button-display">Kembali ke Home</a>
+    <h1>Semua Data Janji Temu</h1>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>Appoinment ID</th>
+                <th>Patient ID</th>
+                <th>Doctor Name</th>
+                <th>Date</th>
+                <th>Diagnosis</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments_list %}
+            <tr>
+                <td class="appointment_id">{{ appointment.appointment_id }}</td>
+                <td class="patient_id">{{ appointment.patient_id }}</td>
+                <td>{{ appointment.doctor_name }}</td>
+                <td class="date">{{ appointment.date }}</td>
+                <td>{{ appointment.diagnosis }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,25 @@
+openapi: 3.0.0
+info:
+  title: Update data appointment
+  version: 1.0.0
+tags:
+  - name: Daftar API
+parameters:
+  - name: appointment_id
+    in: path
+    descritpion: ID appointment yang akan diperbarui
+    required: true
+    type: integer
+  - in: body
+    name: body
+    description: Data appointment yang akan diperbarui
+    required: true
+    scehma:
+      $ref: '#/definitions/Appointments'
+responses:
+  200:
+    description: Data berhasil diperbarui
+    schema:
+      $ref: '#/definitions/Appointments'
+  404:
+    description: Data tidak ditemukan

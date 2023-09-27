@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: Hapus data appointment
+  version: 1.0.0
+tags:
+  - name: Daftar API
+parameters:
+  - name: appointment_id
+    in: path
+    description: ID appointment yang akan dihapus
+    required: true
+    type: integer
+responses:
+  200:
+    description: Data appointment berhasil dihapus
+  404:
+    description: Data tidak ditemukan

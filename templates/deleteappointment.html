@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search and Delete Appointment</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body class="purple-theme ">
+    <h2>Search Appointment to Delete</h2>
+
+    <div class="form-container">
+        <form action="/deleteappointment" method="post">
+            <label class="field-label" for="name">Nama Pasien:</label>
+            <input type="text" id="name" name="name" placeholder="Enter Nama Pasien">
+            <input type="submit" value="Search" class="update-button">
+        </form>
+        <a href="/" class="home-button">Kembali ke Home</a>
+    </div>
+
+    {% if appointments_list %}
+    <h3>Appointment Found:</h3>
+    <table>
+        <tr>
+            <th>Appoinment ID</th>
+            <th>Patient ID</th>
+            <th>Doctor Name</th>
+            <th>Date</th>
+            <th>Diagnosis</th>
+            <th>Action</th>
+        </tr>
+        {% for appointment in appointments_list %}
+        <tr>
+            <td>{{ appointment.appointment_id }}</td>
+            <td>{{ appointment.patient_id }}</td>
+            <td>{{ appointment.doctor_name }}</td>
+            <td>{{ appointment.date }}</td>
+            <td>{{ appointment.diagnosis }}</td>
+            <td>
+                <button onclick="confirmDelete('{{ appointment.appointment_id }}', '{{ appointment.doctor_name }}', '{{ appointment.date }}')" class="update-button">Update</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <script>
+        function confirmDelete(appointment_id, doctor_name, date) {
+            var name = document.getElementById('name').value
+            const isConfirmed = confirm(`Apakah anda yakin ingin menghapus data appointment pasien ${name} dengan dokter ${doctor_name} pada tanggal ${date}?`);
+            if (isConfirmed) {
+                fetch(`/appointment/${appointment_id}`, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message.includes("berhasil dihapus")) {
+                        alert("Data Appointment berhasil dihapus!");
+                        location.reload();
+                    } else {
+                        alert("Terjadi kesalahan saat menghapus data. Silhakan coba lagi.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error", error);
+                    alert("Terjadi kesalahan saat menghapus data. Silahkan coba lagi");
+                })
+            }
+        }
+    </script>
+</body>
+</html>
