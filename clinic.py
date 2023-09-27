@@ -9,11 +9,9 @@ import os
 # Mendefinisikan app
 app = Flask(__name__)
 
-# Lokasi database
-DATABASE_PATH = 'C:/Users/user/Documents/Training/Python/finalproject/project/clinic.db'
-
 # Konfigurasi database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_PATH
+app.config['SQLALCHEMY_ECH0'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:jhmEAccHJ0EdjNdDCtuJ@containers-us-west-108.railway.app:7821/railway'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['SWAGGER'] = {
