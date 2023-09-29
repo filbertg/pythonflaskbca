@@ -437,5 +437,5 @@ def delete_appointments(appointment_id):
         return jsonify({'message': f'Terjadi kesalahan: {e}'}), 500
 
 if __name__ == '__main__':
-    # app.run(debug=True, port=5030)
-    app.run(debug=True)
+    app.run(debug=True, port=5030)
+    # app.run(debug=True)

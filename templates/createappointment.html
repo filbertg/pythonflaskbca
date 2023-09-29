@@ -20,7 +20,7 @@
     </div>
 
     {% if patients_list %}
-    <h3>Patient Found:</h3>
+    <h3 class="title">Patient Found:</h3>
     <table>
         <tr>
             <th>Patient ID</th>
@@ -36,13 +36,13 @@
             <td>{{ patient.age }}</td>
             <td>{{ patient.medical_history }}</td>
             <td>
-                <button onclick="showCreateForm('{{ patient.patient_id }}')" class="update-button">Update</button>
+                <button onclick="showCreateForm('{{ patient.patient_id }}')" class="update-button">Create</button>
             </td>
         </tr>
         {% endfor %}
     </table>
     <div id="createForm" style="display:none;">
-        <h3>Input Janji Temu:</h3>
+        <h3 class="title">Input Janji Temu:</h3>
         <form action="/create-appointment" method="post">
             <label class="field-label" for="patient_id">Patient ID:</label>
             <input type="text" id="patient_id" name="patient_id" placeholder="Enter Patient ID" required readonly>
@@ -64,7 +64,7 @@
     </script>
 
     {% else %}
-    <p>Tidak ada data yang ditemukan untuk nama pasien yang diberikan</p>
+    <p class="title">Tidak ada data yang ditemukan untuk nama pasien yang diberikan</p>
     {% endif %}
 </body>
 </html>

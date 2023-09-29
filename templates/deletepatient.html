@@ -19,7 +19,7 @@
     </div>
 
     {% if patients_list %}
-    <h3>Patient Found:</h3>
+    <h3 class="title">Patient Found:</h3>
     <table>
         <tr>
             <th>Patient ID</th>
@@ -35,7 +35,7 @@
             <td>{{ patient.age }}</td>
             <td>{{ patient.medical_history }}</td>
             <td>
-                <button onclick="confirmDelete  ('{{ patient.patient_id }}', '{{ patient.name }}')" class="update-button">Update</button>
+                <button onclick="confirmDelete  ('{{ patient.patient_id }}', '{{ patient.name }}')" class="delete-button">Delete</button>
             </td>
         </tr>
         {% endfor %}

@@ -19,7 +19,7 @@
     </div>
 
     {% if appointments_list %}
-    <h3>Appointment Found:</h3>
+    <h3 class="title">Appointment Found:</h3>
     <table>
         <tr>
             <th>Appoinment ID</th>
@@ -43,7 +43,7 @@
         {% endfor %}
     </table>
     <div id="updateForm" style="display:none;">
-        <h3>Update Data:</h3>
+        <h3 class="title">Update Data:</h3>
         <form action="/update-appointment" method="post">
             <input type="hidden" id="updateId" name="appointment_id">
             <input type="hidden" id="updatedPatientId" name="patient_id">
@@ -68,7 +68,7 @@
     </script>
 
     {% else %}
-    <p>Tidak ada data yang ditemukan untuk nama pasien yang diberikan</p>
+    <p class="title">Tidak ada data yang ditemukan untuk nama pasien yang diberikan</p>
     {% endif %}
 </body>
 </html>
