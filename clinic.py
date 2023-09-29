@@ -45,13 +45,14 @@ db = SQLAlchemy(app)
 basedir = os.path.abspath(os.path.dirname(__file__))
 swagger_dir = os.path.join(basedir, "swagger_docs")
 
-# Model Data Karyawan
+# Model Data Patient
 class Patients(db.Model):
     patient_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100), nullable = False)
     age = db.Column(db.Integer, nullable = False)
     medical_history = db.Column(db.String(255))
 
+# Model Data Appointment
 class Appointments(db.Model):
     appointment_id = db.Column(db.Integer, primary_key = True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patients.patient_id'),nullable = False)
@@ -162,7 +163,7 @@ def create_patients():
         if not name or not age:
             return render_template('createpatient.html', error = "Semua field wajib diisi!")
 
-        # Membuat objek karyawan
+        # Membuat objek patient
         new_patient = Patients (
             name = name,
             age = age,
@@ -256,13 +257,13 @@ def update_patients():
         age = request.form.get('age')
         medical_history = request.form.get('medical_history')
 
-        # Temukan karyawan berdasarkan id_karyawan
+        # Temukan pasien berdasarkan patient_id
         patient = Patients.query.get(patient_id)
 
         if not patient:
             return jsonify({'message': 'Data pasien tidak ditemukan'}), 404
         
-        # Update data karyawan
+        # Update data pasien
         patient.name = name
         patient.age = age
         patient.medical_history = medical_history
@@ -288,7 +289,7 @@ def updatePatients(patient_id):
     if not patient:
         return jsonify({'message': 'Data pasien tidak ditemukan'}), 404
         
-    # Update data karyawan
+    # Update data pasien
     patient.name = name
     patient.age = age
     patient.medical_history = medical_history
@@ -324,13 +325,13 @@ def update_appointments():
         date_value = datetime.strptime(date, '%Y-%m-%dT%H:%M')
         diagnosis = request.form.get('diagnosis')
 
-        # Temukan karyawan berdasarkan id_karyawan
+        # Temukan pasien berdasarkan patient_id
         appointment = Appointments.query.get(appointment_id)
 
         if not appointment:
             return jsonify({'message': 'Data pasien tidak ditemukan'}), 404
         
-        # Update data karyawan
+        # Update data pasien
         appointment.doctor_name = doctor_name
         appointment.date = date_value
         appointment.diagnosis = diagnosis
@@ -357,7 +358,7 @@ def updateAppointments(appointment_id):
     if not appointment:
         return jsonify({'message': 'Data appointment tidak ditemukan'}), 404
         
-    # Update data karyawan
+    # Update data pasien
     appointment.patient_id = patient_id
     appointment.doctor_name = doctor_name
     appointment.date = date
@@ -394,9 +395,9 @@ def delete_patients(patient_id):
         if patient_to_delete:
             db.session.delete(patient_to_delete)
             db.session.commit()
-            return jsonify({'message': f'Data karyawan dengan ID {patient_id} berhasil dihapus'}), 200
+            return jsonify({'message': f'Data pasien dengan ID {patient_id} berhasil dihapus'}), 200
         else:
-            return jsonify({'message': f'Data karyawan dengan ID {patient_id} tidak ditemukan'}), 404
+            return jsonify({'message': f'Data pasien dengan ID {patient_id} tidak ditemukan'}), 404
     except Exception as e:
         return jsonify({'message': f'Terjadi kesalahan: {e}'}), 500
 
@@ -430,9 +431,9 @@ def delete_appointments(appointment_id):
         if appointment_to_delete:
             db.session.delete(appointment_to_delete)
             db.session.commit()
-            return jsonify({'message': f'Data karyawan dengan ID {appointment_id} berhasil dihapus'}), 200
+            return jsonify({'message': f'Data appointment dengan ID {appointment_id} berhasil dihapus'}), 200
         else:
-            return jsonify({'message': f'Data karyawan dengan ID {appointment_id} tidak ditemukan'}), 404
+            return jsonify({'message': f'Data appointment dengan ID {appointment_id} tidak ditemukan'}), 404
     except Exception as e:
         return jsonify({'message': f'Terjadi kesalahan: {e}'}), 500
 
