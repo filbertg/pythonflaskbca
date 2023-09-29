@@ -14,6 +14,13 @@ app.config['SQLALCHEMY_ECH0'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:jhmEAccHJ0EdjNdDCtuJ@containers-us-west-108.railway.app:7821/railway'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Lokasi database
+# DATABASE_PATH = 'C:/Users/user/Documents/Training/Python/finalproject/project/clinic.db'
+
+# # Konfigurasi database
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_PATH
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 app.config['SWAGGER'] = {
     'title': 'Sistem Informasi Manajemen Pasien untuk Klinik API',
     'uiversion': 3,
@@ -116,11 +123,38 @@ def get_all_appointments():
             # Mengembalikan pesan kesalahan jika tidak ada data pasien
             return render_template('error.html', pesan = "Tidak ada data janji temu yang dapat ditampilkan"), 404
 
-@app.route('/create-patients', methods = ['GET', 'POST'])
+@app.route('/input-patients', methods = ['POST'])
 @swag_from(os.path.join(swagger_dir, "create_data_patients.yaml"))
+def input_patients():
+    data = request.json
+    name = data['name']
+    age = data['age']
+    medical_history = data['medical_history']
+
+    if not name or not age:
+        return jsonify({'message': 'Semua field wajib diisi!'}), 400
+    
+    # Membuat objek pasien
+    new_patient = Patients (
+        name = name,
+        age = age,
+        medical_history = medical_history
+    )
+
+    # Proses simpan data
+    db.session.add(new_patient)
+    db.session.commit()
+
+    # Mengembalikan respons HTTP 201 Created
+    return jsonify({'message': 'Data karayawan berhasil ditambahkan'}), 201
+    
+
+
+@app.route('/create-patients', methods = ['GET', 'POST'])
 def create_patients():
     if request.method == "POST":
         # Mendapatkan data dari form
+        
         name = request.form.get('name')
         age = request.form.get('age')
         medical_history = request.form.get('medical_history')
@@ -153,7 +187,6 @@ def createappointment():
     return render_template('createappointment.html')
 
 @app.route('/create-appointment', methods = ['POST'])
-@swag_from(os.path.join(swagger_dir, "create_data_appointments.yaml"))
 def create_appointments():
     patient_id = request.form.get('patient_id')
     doctor_name = request.form.get('doctor_name')
@@ -178,6 +211,34 @@ def create_appointments():
     # Mengarahkan ke halaman konfirmasi
     return render_template('confirmation.html')    
 
+@app.route('/input-appointment', methods = ['POST'])
+@swag_from(os.path.join(swagger_dir, "create_data_appointments.yaml"))
+def input_appointments():
+    data = request.json
+    
+    patient_id = data['patient_id']
+    doctor_name = data['doctor_name']
+    date = data['date']
+    diagnosis = data['diagnosis']
+
+    if not patient_id or not doctor_name or not date:
+        return jsonify({'message': 'Semua field wajib diisi!'}), 400
+    
+    # Membuat objek pasien
+    new_appointment = Appointments (
+        patient_id = patient_id,
+        doctor_name = doctor_name,
+        date = date,
+        diagnosis = diagnosis
+    )
+
+    # Proses simpan data
+    db.session.add(new_appointment)
+    db.session.commit()
+
+    # Mengembalikan respons HTTP 201 Created
+    return jsonify({'message': 'Data appointment berhasil ditambahkan'}), 201
+
 @app.route('/updatepatient', methods = ['GET', 'POST'])
 def updatepatients():
     if request.method == "POST":
@@ -187,7 +248,6 @@ def updatepatients():
     return render_template('updatepatient.html')
 
 @app.route('/update-patient', methods = ['POST'])
-@swag_from(os.path.join(swagger_dir, "update_data_patients.yaml"))
 def update_patients():
     try:
         # Ambil data dari form
@@ -213,6 +273,30 @@ def update_patients():
         return redirect(url_for('get_all_patients'))
     except Exception as e:
         return jsonify({'message': f'Terjadi kesalahan: {str(e)}'}), 500
+    
+@app.route('/update-patients/<int:patient_id>', methods = ['POST'])
+@swag_from(os.path.join(swagger_dir, "update_data_patients.yaml"))
+def updatePatients(patient_id):
+    data = request.json
+
+    name = data['name']
+    age = data['age']
+    medical_history = data['medical_history']
+
+    patient = Patients.query.get(patient_id)
+
+    if not patient:
+        return jsonify({'message': 'Data pasien tidak ditemukan'}), 404
+        
+    # Update data karyawan
+    patient.name = name
+    patient.age = age
+    patient.medical_history = medical_history
+
+    db.session.commit()
+
+    # Mengembalikan respons HTTP 200 Created
+    return jsonify({'message': 'Data pasien berhasil diupdate'}), 200
 
 @app.route('/updateappointment', methods = ['GET', 'POST'])
 def updateappointment():
@@ -231,7 +315,6 @@ def updateappointment():
         
 
 @app.route('/update-appointment', methods = ['POST'])
-@swag_from(os.path.join(swagger_dir, "update_data_appointments.yaml"))
 def update_appointments():
     try:
         # Ambil data dari form
@@ -239,8 +322,6 @@ def update_appointments():
         doctor_name = request.form.get('doctor_name')
         date = request.form.get('date')
         date_value = datetime.strptime(date, '%Y-%m-%dT%H:%M')
-        print(date)
-        print(type(date))
         diagnosis = request.form.get('diagnosis')
 
         # Temukan karyawan berdasarkan id_karyawan
@@ -260,6 +341,32 @@ def update_appointments():
         return redirect(url_for('get_all_appointments'))
     except Exception as e:
         return jsonify({'message': f'Terjadi kesalahan: {str(e)}'}), 500
+
+@app.route('/update-appointments/<int:appointment_id>', methods = ['POST'])
+@swag_from(os.path.join(swagger_dir, "update_data_appointments.yaml"))
+def updateAppointments(appointment_id):
+    data = request.json
+
+    patient_id = data['patient_id']
+    doctor_name = data['doctor_name']
+    date = data['date']
+    diagnosis = data['diagnosis']
+
+    appointment = Appointments.query.get(appointment_id)
+
+    if not appointment:
+        return jsonify({'message': 'Data appointment tidak ditemukan'}), 404
+        
+    # Update data karyawan
+    appointment.patient_id = patient_id
+    appointment.doctor_name = doctor_name
+    appointment.date = date
+    appointment.diagnosis = diagnosis
+
+    db.session.commit()
+
+    # Mengembalikan respons HTTP 200 Created
+    return jsonify({'message': 'Data appointment berhasil diupdate'}), 200
 
 @app.route('/deletepatient', methods = ['GET', 'POST'])
 def deletepatient():
@@ -330,4 +437,5 @@ def delete_appointments(appointment_id):
         return jsonify({'message': f'Terjadi kesalahan: {e}'}), 500
 
 if __name__ == '__main__':
+    # app.run(debug=True, port=5030)
     app.run(debug=True)
